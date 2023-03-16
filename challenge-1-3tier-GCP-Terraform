@@ -1,4 +1,9 @@
-##3 tier with gcp terraform
+# Provider configuration
+provider "google" {
+  credentials = file("path/to/your/credentials.json")
+  project     = "your-project-id"
+  region      = "us-central1"
+}
 
 # Create a new App Engine application
 resource "google_app_engine_application" "app_engine" {
@@ -105,7 +110,5 @@ resource "google_app_engine_service" "app_service" {
   }
 }
 
-An App Engine application in the specified GCP project and region
-A Cloud SQL instance for the database
-A database for the application
-Two App Engine services, one for the web layer and one for the app layer, each with automatic scaling, network settings,
+
+# we have used Two App Engine services, one for the web layer and one for the app layer, each with automatic scaling, network settings.
