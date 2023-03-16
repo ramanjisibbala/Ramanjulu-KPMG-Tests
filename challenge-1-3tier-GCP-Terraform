@@ -1,4 +1,5 @@
 #Terraform code to set up a 3-tier environment in GCP using App Engine:
+### I have directly hard coded the values instead of creating variables.tf and other output.tf , modules for individuall each resources, to make it simple and understandable
 # Provider configuration
 provider "google" {
   credentials = file("path/to/your/credentials.json")
