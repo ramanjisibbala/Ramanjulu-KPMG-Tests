@@ -1,9 +1,7 @@
 #We need to write code that will query the meta data of an instance within GCP and provide a
 json formatted output.
 
-
-you can use the GCP metadata API and any programming language of your choice. Here's an example using Python:
-
+we can use the GCP metadata API and using Python:
 
 import requests
 import json
@@ -42,21 +40,14 @@ metadata = response.json()
 # Print the metadata as a formatted JSON string
 print(json.dumps(metadata, indent=4))
 
-
-
-
-This code uses the requests library to send a GET request to the GCP metadata server with the recursive=true parameter to retrieve all available metadata for the instance. The response is parsed into a JSON object using the .json() method, and then printed in a formatted string using the json.dumps() method with the indent=4 parameter to make the output more human-readable. The "Metadata-Flavor": "Google" header is also included to indicate that the request is being made from within a GCP instance.
-
-
+#####This code uses the requests library to send a GET request to the GCP metadata server with the recursive=true parameter to retrieve all available metadata for the instance. The response is parsed into a JSON object using the .json() method, and then printed in a formatted string using the json.dumps() method with the indent=4 parameter to make the output more human-readable. The "Metadata-Flavor": "Google" header is also included to indicate that the request is being made from within a GCP instance.
 sudo pip install requests
-how The code allows for a particular data key to be retrieved individually ?
-
-If you want to retrieve a particular metadata key individually, you can modify the previous code to use the requests.get() method with a specific metadata URL that includes the desired key. Here's an example:
-
+Q))how The code allows for a particular data key to be retrieved individually
+If you want to retrieve a particular metadata key individually, you can modify the previous code to use the requests.get() method with a specific metadata URL that includes the desired key. 
+lets take an example:
 
 
 import requests
-
 metadata_server = 'http://metadata.google.internal/computeMetadata/v1/'
 metadata_flavor = {'Metadata-Flavor' : 'Google'}
 
@@ -72,4 +63,4 @@ print(response.text)
 
 In this example, we define the key variable to be the specific metadata key that we want to retrieve. We then send a GET request to the metadata server using the requests.get() method with the metadata URL that includes the key. The response contains only the value of the specified key, which we print to the console using the response.text attribute.
 
-You can modify the key variable to retrieve any other metadata key that you need.
+we can modify the key variable to retrieve any other metadata key that we need.
