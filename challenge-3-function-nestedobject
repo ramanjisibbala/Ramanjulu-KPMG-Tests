@@ -1,4 +1,4 @@
-Sure, here's an example Python function that takes in a nested object and a key and returns the corresponding value:
+we have choosen  Python function that takes in a nested object and a key and returns the corresponding value:
 
 def get_value(obj, key):
     if key in obj:
@@ -8,7 +8,8 @@ def get_value(obj, key):
             result = get_value(v, key)
             if result is not None:
                 return result
-This function first checks if the key is directly present in the object. If so, it returns the value associated with that key. Otherwise, it recursively searches through any nested objects for the key.
+
+This function first checks if the key is directly present in the object. If so, it returns the value associated with that key. Otherwise, it recursively searches through any nested objects for the key.
 
 
 You can use this function like this:
