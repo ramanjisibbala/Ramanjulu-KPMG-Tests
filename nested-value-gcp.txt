@@ -1,0 +1,69 @@
+Sure, here's an example Python function that takes in a nested object and a key and returns the corresponding value:
+
+def get_value(obj, key):
+    if key in obj:
+        return obj[key]
+    for k, v in obj.items():
+        if isinstance(v, dict):
+            result = get_value(v, key)
+            if result is not None:
+                return result
+This function first checks if the key is directly present in the object. If so, it returns the value associated with that key. Otherwise, it recursively searches through any nested objects for the key.
+
+
+You can use this function like this:
+
+my_obj = {
+    "name": "John",
+    "age": 30,
+    "address": {
+        "street": "123 Main St",
+        "city": "Anytown",
+        "state": "CA"
+    }
+}
+
+# Get the value associated with the "street" key in the nested "address" object
+street = get_value(my_obj, "street")
+print(street)  # Output: 123 Main St
+
+# Get the value associated with the "age" key in the top-level object
+age = get_value(my_obj, "age")
+print(age)  # Output: 30
+
+
+final program to execute
+
+# Define the get_value function
+def get_value(obj, key):
+    if key in obj:
+        return obj[key]
+    for k, v in obj.items():
+        if isinstance(v, dict):
+            result = get_value(v, key)
+            if result is not None:
+                return result
+
+# Create a nested object
+my_obj = {
+    "name": "John",
+    "age": 30,
+    "address": {
+        "street": "123 Main St",
+        "city": "Anytown",
+        "state": "CA"
+    }
+}
+
+# Call the get_value function to retrieve the value of the "street" key in the nested object
+street = get_value(my_obj, "street")
+print(street)  # Output: 123 Main St
+
+# Call the get_value function to retrieve the value of the "age" key in the top-level object
+age = get_value(my_obj, "age")
+print(age)  # Output: 30
+
+
+
+
+

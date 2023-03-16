@@ -1,0 +1,111 @@
+##3 tier with gcp terraform
+
+# Create a new App Engine application
+resource "google_app_engine_application" "app_engine" {
+  project     = var.project_id
+  location_id = "us-central"
+}
+
+# Create a Cloud SQL instance for the database
+resource "google_sql_database_instance" "cloud_sql_instance" {
+  name             = "my-database-instance"
+  region           = "us-central1"
+  database_version = "MYSQL_5_7"
+
+  settings {
+    tier = "db-f1-micro"
+  }
+}
+
+# Create a database for the application
+resource "google_sql_database" "app_database" {
+  name       = "my-database"
+  instance   = google_sql_database_instance.cloud_sql_instance.name
+}
+
+# Create a new App Engine service for the web layer
+resource "google_app_engine_service" "web_service" {
+  project     = var.project_id
+  location_id = "us-central"
+  service_id  = "web"
+  
+  # Configure the App Engine service to use automatic scaling
+  automatic_scaling {
+    cool_down_period       = 120
+    cpu_utilization_target = 0.5
+    max_instances          = 5
+    min_instances          = 2
+    min_pending_latency    = "30ms"
+    max_pending_latency    = "200ms"
+  }
+
+  # Define the service's network settings
+  network_settings {
+    session_affinity       = "GENERATED_COOKIE"
+    name                   = "default"
+    forwarded_ports        = ["80"]
+    ingress_internal_links = ["*"]
+  }
+
+  # Define the service's runtime environment
+  runtime {
+    main_executable_path = "echo"
+    runtime_main         = "app.py"
+    env_variables = {
+      SQLALCHEMY_DATABASE_URI = google_sql_database.app_database.connection_name
+    }
+  }
+
+  # Deploy the application code to the service
+  deployment {
+    zip {
+      source_url = "https://github.com/my-org/my-repo/archive/main.zip"
+    }
+  }
+}
+
+# Create a new App Engine service for the app layer
+resource "google_app_engine_service" "app_service" {
+  project     = var.project_id
+  location_id = "us-central"
+  service_id  = "app"
+  
+  # Configure the App Engine service to use automatic scaling
+  automatic_scaling {
+    cool_down_period       = 120
+    cpu_utilization_target = 0.5
+    max_instances          = 5
+    min_instances          = 2
+    min_pending_latency    = "30ms"
+    max_pending_latency    = "200ms"
+  }
+
+  # Define the service's network settings
+  network_settings {
+    session_affinity       = "GENERATED_COOKIE"
+    name                   = "default"
+    forwarded_ports        = ["8080"]
+    ingress_internal_links = ["*"]
+  }
+
+  # Define the service's runtime environment
+  runtime {
+    main_executable_path = "echo"
+    runtime_main         = "app.py"
+    env_variables = {
+      SQLALCHEMY_DATABASE_URI = google_sql_database.app_database.connection_name
+    }
+  }
+
+  # Deploy the application code to the service
+  deployment {
+    zip {
+      source_url = "https://github.com/my-org/my-repo/archive/main.zip"
+    }
+  }
+}
+
+An App Engine application in the specified GCP project and region
+A Cloud SQL instance for the database
+A database for the application
+Two App Engine services, one for the web layer and one for the app layer, each with automatic scaling, network settings,
